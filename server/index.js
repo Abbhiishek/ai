@@ -15,7 +15,10 @@ const anthropic = new Anthropic({ apiKey });
 app.post('/send-prompt', async (req, res) => {
   try {
     const { prompt } = req.body;
-
+    if (!prompt) {
+      res.status(400).json({ error: 'Prompt is required' });
+      return;
+    }
     const response = await anthropic.messages.create({
       model: "claude-3-opus-20240229",
       max_tokens: 1024,
